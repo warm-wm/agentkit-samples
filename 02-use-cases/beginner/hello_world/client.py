@@ -33,13 +33,6 @@ if __name__ == "__main__":
         return create_session_request.session_id
 
     # Step 2: run agent with SSE
-    run_agent_request = RunAgentRequest(
-        app_name=app_name,
-        user_id=user_id,
-        session_id=create_session(),
-        new_message=Content(parts=[Part(text="计算斐波那契数列100位")], role="user"),
-        stream=True,
-    )
 
     print("[run agent] Event from server:")
 
