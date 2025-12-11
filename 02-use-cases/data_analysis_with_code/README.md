@@ -1,4 +1,4 @@
-# Data Analysis with Lance Project
+# Data Analysis with Code Project
 
 ## 项目概述
 
@@ -44,7 +44,7 @@
 
 ### 1. 元数据表
 
-提供数据集的整体描述和结构信息，帮助用户了解可用的数据资源。
+提供数据集的整体描述和结构信息，帮助用户了解可用的数据资源，其中包含每一列的描述、数据类型、样例值和可能的取值范围。
 
 ### 2. IMDB 电影数据表 (`imdb_top_1000`)
 
@@ -57,7 +57,7 @@
 | `director`              | 字符串 | 导演                                                                     |
 | `genre`                 | 字符串 | 电影类型                                                                 |
 | `imdb_rating`           | 浮点数 | IMDB 评分                                                                |
-| `poster_link`           | 字符串 | 电影海报链接                                                             |
+| `poster_curde_link`     | 字符串 | 电影缩略图海报链接                                                       |
 | `poster_precision_link` | 字符串 | 电影海报高清链接                                                         |
 
 ## 配置流程
@@ -109,10 +109,11 @@ streamlit run web/app.py
 
 当用户提出问题时，系统将遵循以下流程处理：
 
-1. **探索阶段 (Discovery)**：调用 `catalog_discovery` 工具确认可用的表名和字段信息。
-2. **查询阶段 (Query)**：
+1. **搜数阶段 (Discovery)**：调用 `catalog_discovery` 工具确认可用的表名和字段信息。
+2. **数据分析阶段 (Query)**：
    - 对于结构化统计或过滤查询，调用 `duckdb_sql_execution` 工具执行 SQL 查询
    - 对于语义、视觉或混合检索查询，调用 `lancedb_hybrid_execution` 工具执行向量检索
+   - 对于图生视频等非结构化数据处理，调用 `video_generation` 工具执行相应操作
 3. **结果处理阶段 (Result Handling)**：
    - 如果结果为空 `[]`，直接回答用户"未找到"
    - 如果结果正常，立即返回最终答案
