@@ -6,9 +6,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     # Core dependencies for all examples
-    "veadk-python[extensions]>=0.2.28",
-    "agentkit-sdk-python>=0.1.13",
-    "google-adk>=1.18.0,<1.20.0",
+    "veadk-python[extensions]==0.2.29",
+    "agentkit-sdk-python==0.1.15",
+    "google-adk==1.18.0",
 
     # Additional dependencies for compatibility
     "urllib3<2.0.0",
