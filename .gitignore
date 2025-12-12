@@ -8,6 +8,12 @@ __pycache__/
 # C extensions
 *.so
 
+# some unnecessary files
+.python-version
+.veadk-ignore
+.dockerignore
+uv.lock
+
 # Distribution / packaging
 .Python
 develop-eggs/
