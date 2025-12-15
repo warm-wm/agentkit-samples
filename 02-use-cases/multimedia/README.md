@@ -133,6 +133,8 @@ python app/main.py
 
 ## AgentKit 部署
 
+> todo
+
 ### 技术实现
 
 本项目核心为一套基于 VeADK 构建的多 Agent 协作框架。各 Agent 职责明确，通过 A2A (Agent-to-Agent) 通信协同工作，完成从需求理解到视频发布的完整流程。
