@@ -175,30 +175,6 @@ uv run agent.py
 
 **重要提示**：VikingDB 首次插入文档需要构建向量索引（约 2-5 分钟），首次运行可能报错，请等待索引构建完成后重试。
 
-#### 方式四：部署到火山引擎 veFaaS
-
-**安全提示**：
-> 以下命令仅用于开发测试。生产环境必须启用 `VEFAAS_ENABLE_KEY_AUTH=true`（默认值）并配置 IAM 角色。
-
-```bash
-cd vikingdb
-
-# 配置环境变量（仅测试用）
-export VEFAAS_ENABLE_KEY_AUTH=false
-export VOLCENGINE_ACCESS_KEY=<Your Access Key>
-export VOLCENGINE_SECRET_KEY=<Your Secret Key>
-
-# 基础部署（快速开始）
-veadk deploy --vefaas-app-name=vikingdb-agent --use-adk-web
-
-# 生产级部署（推荐）
-veadk deploy \
-  --vefaas-app-name=vikingdb-agent \
-  --use-adk-web \
-  --veapig-instance-name=<Your veaPIG Instance> \
-  --iam-role "trn:iam::<Your Account ID>:role/<Your IAM Role>"
-```
-
 ## AgentKit 部署
 
 ### 前置准备

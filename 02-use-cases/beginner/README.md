@@ -146,20 +146,6 @@ agentkit launch
 agentkit invoke 'your test prompt'
 ```
 
-#### 3. 部署到火山引擎 veFaaS
-
-```bash
-cd <案例目录>
-
-# 配置环境变量
-export VEFAAS_ENABLE_KEY_AUTH=false  # 仅测试用
-export VOLCENGINE_ACCESS_KEY=<Your Access Key>
-export VOLCENGINE_SECRET_KEY=<Your Secret Key>
-
-# 部署到 veFaaS
-veadk deploy --vefaas-app-name=<your-app-name> --use-adk-web
-```
-
 ## 📖 学习路径
 
 ### 路径一：基础入门（推荐新手）
@@ -366,22 +352,14 @@ Agent-to-Agent 协议，展示：
 
 ### Q4: 如何部署到生产环境？
 
-**A**: 生产环境部署建议使用 AgentKit 平台或 veFaaS：
-
-1. **AgentKit 平台部署**（推荐）：
+**A**: 生产环境部署建议使用 AgentKit 平台：
 
 ```bash
 agentkit config
 agentkit launch
 ```
 
-1. **veFaaS 部署**（需要更多配置）：
-
-   ```bash
-   veadk deploy --vefaas-app-name=<name> --use-adk-web \
-     --veapig-instance-name=<instance> \
-     --iam-role "trn:iam::<account>:role/<role>"
-   ```
+**注意**：生产环境必须启用密钥认证并配置 IAM 角色。
 
 **注意**：生产环境必须启用密钥认证并配置 IAM 角色。
 

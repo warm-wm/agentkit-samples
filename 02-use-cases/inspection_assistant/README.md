@@ -171,7 +171,7 @@ agentkit launch
 
 Agentkit的智能体列表页面提供了调试入口，点击之后即可以UI可视化的方式调试智能体功能
 
-![img](./img/agent-test-run-01.png)
+![img](./img/agent-test-run.png)
 
 #### **基于命令行调试**
 
