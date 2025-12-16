@@ -5,7 +5,6 @@ from langchain_core.tools import tool
 from dotenv import load_dotenv
 from agentkit.apps import AgentkitSimpleApp
 import logging
-import asyncio
 import json
 
 
@@ -14,16 +13,19 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 # 1. Define tools
 @tool
 def get_word_length(word: str) -> int:
     """Returns the length of a word."""
     return len(word)
 
+
 @tool
 def add_numbers(a: int, b: int) -> int:
     """Adds two numbers together."""
     return a + b
+
 
 # Create the agent
 # Fix: Ensure environment variables are mapped to the correct arguments
@@ -32,20 +34,22 @@ agent = create_agent(
         model=os.getenv("MODEL_NAME", "gpt-4o-mini"),
         api_key=os.getenv("OPENAI_API_KEY"),
         base_url=os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1"),
-        temperature=0
+        temperature=0,
     ),
     tools=[get_word_length, add_numbers],
-    system_prompt="You are a helpful assistant. You have access to tools to help answer questions."
+    system_prompt="You are a helpful assistant. You have access to tools to help answer questions.",
 )
 
 
 app = AgentkitSimpleApp()
+
+
 @app.entrypoint
 async def run(payload: dict, headers: dict):
     prompt = payload.get("prompt")
     user_id = headers.get("user_id")
     session_id = headers.get("session_id")
-        
+
     # Default values if still missing
     user_id = user_id or "default_user"
     session_id = session_id or "default_session"
@@ -55,17 +59,17 @@ async def run(payload: dict, headers: dict):
     )
 
     inputs = {"messages": [{"role": "user", "content": prompt}]}
-    
+
     # stream returns an iterator of updates
     # To get the final result, we can just iterate or use invoke
     async for chunk in agent.astream(inputs, stream_mode="updates"):
         # chunk is a dict with node names as keys and state updates as values
         for node, state in chunk.items():
             logger.debug(f"--- Node: {node} ---")
-            
+
             if "messages" in state:
                 last_msg = state["messages"][-1]
-                
+
                 for block in last_msg.content_blocks:
                     # 返回的event_data数据结构要求符合 adk event规范： https://google.github.io/adk-docs/events/#identifying-event-origin-and-type
                     event_data = {
@@ -76,10 +80,12 @@ async def run(payload: dict, headers: dict):
                         }
                     }
                     yield json.dumps(event_data)
-        
+
+
 @app.ping
 def ping() -> str:
     return "pong!"
+
 
 async def local_test():
     """Helper to run the agent locally without server"""
@@ -88,6 +94,7 @@ async def local_test():
     print(f"Query: {query}")
     async for event in run({"prompt": query}, {"user_id": "1", "session_id": "1"}):
         print(f"Received event: {event}")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)

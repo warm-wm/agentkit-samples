@@ -8,7 +8,8 @@
 
 我们将对比 `langchain_agent.py` (原生实现) 和 `agent.py` (AgentKit 适配版)，改造过程仅需以下 **3 点** 极小改动：
 
-1.  **引入 SDK 并初始化应用**
+1. **引入 SDK 并初始化应用**
+
     ```python
     # 引入 AgentKit SDK
     from agentkit.apps import AgentkitSimpleApp
@@ -17,38 +18,41 @@
     app = AgentkitSimpleApp()
     ```
 
-2.  **标记入口函数**
+2. **标记入口函数**
     使用 `@app.entrypoint` 装饰器标记您的主逻辑函数。
+
     ```python
     @app.entrypoint
     async def run(payload: dict, headers: dict):
         # 您的业务逻辑...
     ```
 
-3.  **按照标准协议返回**
+3. **按照标准协议返回**
     将原本直接打印到控制台的输出，改为 `yield` 返回标准 JSON 格式的 Event 数据。
+
     ```python
     # 原生 LangChain: print(chunk)
     # AgentKit 适配:
     yield json.dumps(event_data)
     ```
+
 这些改动是非侵入式的，您原有的 Chain 定义、Tool 定义和 Prompt 逻辑完全不需要修改。
 
 ## 核心功能
 
-1.  **构建 LangChain Agent**：使用 LangChain 1.0 标准范式构建具备工具调用能力的 ReAct Agent。
-2.  **AgentKit 快速适配**：通过 SDK 将本地 Agent 转换为生产级微服务，无需修改核心 Chain 逻辑。
-3.  **云端一键部署**：利用 AgentKit CLI 实现代码打包、镜像构建及环境变量的自动同步。
+1. **构建 LangChain Agent**：使用 LangChain 1.0 标准范式构建具备工具调用能力的 ReAct Agent。
+2. **AgentKit 快速适配**：通过 SDK 将本地 Agent 转换为生产级微服务，无需修改核心 Chain 逻辑。
+3. **云端一键部署**：利用 AgentKit CLI 实现代码打包、镜像构建及环境变量的自动同步。
 
 ## Agent 能力
 
 本 Agent 具备以下基础能力：
 
--   **自动化推理**：基于 ReAct 范式，自动分析用户问题并规划工具调用顺序。
--   **工具调用**：
-    -   `get_word_length`: 计算单词长度。
-    -   `add_numbers`: 执行数值加法运算。
--   **流式响应**：支持 SSE 标准协议，实时输出思考过程和最终结果。
+- **自动化推理**：基于 ReAct 范式，自动分析用户问题并规划工具调用顺序。
+- **工具调用**：
+  - `get_word_length`: 计算单词长度。
+  - `add_numbers`: 执行数值加法运算。
+- **流式响应**：支持 SSE 标准协议，实时输出思考过程和最终结果。
 
 ## 目录结构说明
 
@@ -66,32 +70,40 @@ session1/
 
 ### 前置准备
 
-1.  **依赖安装**
-    ```bash
-    uv sync
-    source .venv/bin/activate
-    ```
+1. **依赖安装**
 
-2.  **配置环境变量**
-    ```bash
-    cp .env.sample .env
-    # 编辑 .env 文件，填入 OPENAI_API_KEY 等必填项
-    ```
+   ```bash
+   uv sync
+   source .venv/bin/activate
+   ```
+
+2. **配置环境变量**
+
+   ```bash
+   cp .env.sample .env
+   # 编辑 .env 文件，填入 OPENAI_API_KEY 等必填项
+
+   # 火山引擎访问凭证（必需）
+   export VOLCENGINE_ACCESS_KEY=<Your Access Key>
+   export VOLCENGINE_SECRET_KEY=<Your Secret Key>
+   ```
 
 ### 调试方法
 
 **方式一：运行原生脚本** (验证 Agent 逻辑)
+
 ```bash
 uv run langchain_agent.py
 ```
 
 **方式二：运行 AgentKit 服务** (模拟生产环境)
+
 ```bash
 # 启动服务 (监听 8000 端口)
 uv run agent.py
 
 # 在新终端运行客户端测试
-uv run local_client.py
+uv run client.py
 ```
 
 ## AgentKit 部署
@@ -103,6 +115,7 @@ uv run local_client.py
 ```bash
 agentkit config
 ```
+
 此命令会引导您选择项目空间和镜像仓库等信息，生成 `agentkit.yaml`。
 
 ### 2. 部署上线
@@ -119,31 +132,31 @@ agentkit launch
 
 ```bash
 # <URL> 是 launch 命令输出的服务访问地址
-agentkit invoke --url <URL> 'Hello, can you calculate 10 + 20 and tell me the length of the word "AgentKit"?'
+agentkit invoke 'Hello, can you calculate 10 + 20 and tell me the length of the word "AgentKit"?'
 ```
 
 ## 示例提示词
 
--   "What is the length of the word 'Volcengine'?"
--   "Calculate 123 + 456."
--   "Hello, can you calculate 10 + 20 and tell me the length of the word 'AgentKit'?"
--   "Tell me a fun fact about Python." (此Agent不具备通用知识，会尝试使用工具或拒绝回答)
+- "What is the length of the word 'Volcengine'?"
+- "Calculate 123 + 456."
+- "Hello, can you calculate 10 + 20 and tell me the length of the word 'AgentKit'?"
+- "Tell me a fun fact about Python." (此Agent不具备通用知识，会尝试使用工具或拒绝回答)
 
 ## 效果展示
 
--   **本地脚本**：终端直接输出 ReAct 思考链，展示 Agent 的推理过程和最终结果。
--   **HTTP 服务**：客户端接收 SSE 流式事件，包含详细的 `on_llm_chunk` (LLM思考过程)、`on_tool_start` (工具调用开始)、`on_tool_end` (工具调用结束) 等状态信息，提供丰富的交互体验。
+- **本地脚本**：终端直接输出 ReAct 思考链，展示 Agent 的推理过程和最终结果。
+- **HTTP 服务**：客户端接收 SSE 流式事件，包含详细的 `on_llm_chunk` (LLM思考过程)、`on_tool_start` (工具调用开始)、`on_tool_end` (工具调用结束) 等状态信息，提供丰富的交互体验。
 
 ## 常见问题
 
--   **Q: 为什么提示 API Key 无效？**
-    -   A: 请确保 `.env` 文件中的 `OPENAI_API_KEY` 或其他模型服务商的 API Key 配置正确，且 `OPENAI_API_BASE` 与您使用的服务商（如火山方舟、OpenAI）匹配。
+- **Q: 为什么提示 API Key 无效？**
+  - A: 请确保 `.env` 文件中的 `OPENAI_API_KEY` 或其他模型服务商的 API Key 配置正确，且 `OPENAI_API_BASE` 与您使用的服务商（如火山方舟、OpenAI）匹配。
 
--   **Q: 部署时环境变量未生效？**
-    -   A: 请确认 `.env` 文件位于运行 `agentkit launch` 命令的当前项目根目录下。CLI 会自动查找并同步该文件。
+- **Q: 部署时环境变量未生效？**
+  - A: 请确认 `.env` 文件位于运行 `agentkit launch` 命令的当前项目根目录下。CLI 会自动查找并同步该文件。
 
--   **Q: Agent 无法回答通用知识问题？**
-    -   A: 本示例 Agent 主要演示工具调用能力，未集成通用知识库。如需回答通用知识，请扩展 Agent 的工具集或连接到知识库。
+- **Q: Agent 无法回答通用知识问题？**
+  - A: 本示例 Agent 主要演示工具调用能力，未集成通用知识库。如需回答通用知识，请扩展 Agent 的工具集或连接到知识库。
 
 ## 代码许可
 
