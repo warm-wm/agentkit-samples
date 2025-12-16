@@ -40,6 +40,7 @@ AgentKit 代码工坊为让您快速上手 AgentKit 平台，提供了不同入�
 | [`客户服务智能体`](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/customer_support) | ![label](https://img.shields.io/badge/%E8%BF%9B%E9%98%B6-CD853F) | 提供自动的售后咨询和售前导购 |
 | [`视频生成智能体`](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/video_gen) | ![label](https://img.shields.io/badge/%E8%BF%9B%E9%98%B6-CD853F) | 结合多种工具实现视频内容创作 |
 | [`数据分析智能体`](https://github.com/volcengine/agentkit-samples/tree/main/02-use-cases/data_analysis_with_datalake) | ![label](https://img.shields.io/badge/%E4%B8%93%E5%AE%B6-CD5C5C) | 基于 LanceDB 构建的数据分析智能体 |
+| [`agent_skills`](https://github.com/volcengine/agentkit-samples/tree/main/00-advanced/agent_skills) | ![label](https://img.shields.io/badge/%E4%B8%93%E5%AE%B6-CD5C5C) | 基于 AgentKit & VeADK & sandbox 构建可以运行 skills 的智能体 |
 
 每个用例都包含完整的实现，并详细说明如何结合 AgentKit 组件构建应用。
 
