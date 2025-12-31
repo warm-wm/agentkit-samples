@@ -130,15 +130,15 @@ agentkit launch
 
 ## Example Prompts
 
-1.  **Q1: What data do you have?**
-2.  **Q2: Give me some sample data.**
-3.  **Q3: Which movies directed by Ang Lee have a rating over 7?**
-4.  **Q4: Among the movies directed by Ang Lee with a rating over 7, which one has an animal in its poster?**
-5.  **Q5: Turn the movie poster for "Life of Pi" into a video.**
-6.  **Q6: For movies by Hayao Miyazaki with a rating over 7.5 and a poster containing an airplane, generate a video.**
-7.  **Q7: Database Overview - List all table names in the current database and describe the main purpose of each table.**
-8.  **Q8: Schema Validation - Query the detailed schema information for the `imdb_top_1000` table to confirm the specific data type of the `released_year` field.**
-9.  **Q9: Data Sampling - Randomly select and display 5 complete records from the `imdb_top_1000` table.**
+1. **Q1: What data do you have?**
+2. **Q2: Give me some sample data.**
+3. **Q3: Which movies directed by Ang Lee have a rating over 7?**
+4. **Q4: Among the movies directed by Ang Lee with a rating over 7, which one has an animal in its poster?**
+5. **Q5: Turn the movie poster for "Life of Pi" into a video.**
+6. **Q6: For movies by Hayao Miyazaki with a rating over 7.5 and a poster containing an airplane, generate a video.**
+7. **Q7: Database Overview - List all table names in the current database and describe the main purpose of each table.**
+8. **Q8: Schema Validation - Query the detailed schema information for the `imdb_top_1000` table to confirm the specific data type of the `released_year` field.**
+9. **Q9: Data Sampling - Randomly select and display 5 complete records from the `imdb_top_1000` table.**
 10. **Q10: Total Count - Count the total number of movie records in the dataset.**
 11. **Q11: Equality Filter - Query for a list of all movies where the Director is "Christopher Nolan".**
 12. **Q12: Numerical Range - Filter for movies with an IMDB rating strictly greater than 9.0.**
@@ -161,14 +161,14 @@ agentkit launch
 
 When a user asks a question, the system will follow this process:
 
-1.  **Discovery Phase**: Calls the `catalog_discovery` tool to confirm available table names and field information.
-2.  **Data Analysis Phase (Query)**:
-    -   For structured statistical or filtering queries, calls the `duckdb_sql_execution` tool to execute SQL queries.
-    -   For semantic, visual, or hybrid retrieval queries, calls the `lancedb_hybrid_execution` tool to perform vector retrieval.
-    -   For unstructured data processing like image-to-video, calls the `video_generation` tool to perform the corresponding action.
-3.  **Result Handling Phase**:
-    -   If the result is empty `[]`, it directly answers the user "Not found."
-    -   If the result is normal, it immediately returns the final answer.
+1. **Discovery Phase**: Calls the `catalog_discovery` tool to confirm available table names and field information.
+2. **Data Analysis Phase (Query)**:
+    - For structured statistical or filtering queries, calls the `duckdb_sql_execution` tool to execute SQL queries.
+    - For semantic, visual, or hybrid retrieval queries, calls the `lancedb_hybrid_execution` tool to perform vector retrieval.
+    - For unstructured data processing like image-to-video, calls the `video_generation` tool to perform the corresponding action.
+3. **Result Handling Phase**:
+    - If the result is empty `[]`, it directly answers the user "Not found."
+    - If the result is normal, it immediately returns the final answer.
 
 ## Demonstration
 

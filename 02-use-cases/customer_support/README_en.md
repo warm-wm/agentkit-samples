@@ -215,7 +215,7 @@ agentkit config \
 agentkit launch
 ```
 
-2. Invoke the agent
+2. Invoke the agent:
 
 ```bash
 agentkit invoke '{"prompt": "I want to buy a smart TV for my living room, mainly for gaming, with a budget under 3000 yuan."}'

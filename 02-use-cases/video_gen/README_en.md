@@ -66,32 +66,32 @@ Key features include:
 
 #### Volcano Engine Access Credentials
 
-1.  Log in to the [Volcano Engine Console](https://console.volcengine.com)
-2.  Go to "Access Control" → "Users" -> Create a new user or search for an existing username -> Click the username to enter "User Details" -> Go to "Keys" -> Create a new key or copy an existing AK/SK
-    -   As shown in the figure below
-        ![Volcengine AK/SK Management](../img/volcengine_aksk.jpg)
-3.  Configure access permissions for the services that AgentKit depends on for the user:
-    -   On the "User Details" page -> Go to "Permissions" -> Click "Add Permission", and grant the following policies to the user
-    -   `AgentKitFullAccess` (AgentKit full access)
-    -   `APMPlusServerFullAccess` (APMPlus full access)
-4.  Obtain the Volcano Ark model Agent API Key for the user
-    -   Search for the "Volcano Ark" product and click to enter the console
-    -   Go to "API Key Management" -> Create or copy an existing API Key
-    -   As shown in the figure below
-        ![Ark API Key Management](../img/ark_api_key_management.jpg)
-5.  Activate the model's pre-built inference access point
-    -   Search for the "Volcano Ark" product and click to enter the console
-    -   Go to "Activation Management" -> "Language Models" -> Find the corresponding model -> Click "Activate Service"
-    -   Activate the following models used in this case
-        -   root_agent model: `deepseek-v3-1-terminus`
-        -   Image generation model: `doubao-seedream-4-0-250828`
-        -   Video generation model: `doubao-seedance-1-0-pro-250528`
-    -   As shown in the figure below
-        ![Ark Model Service Management](../img/ark_model_service_management.jpg)
+1. Log in to the [Volcano Engine Console](https://console.volcengine.com)
+2. Go to "Access Control" → "Users" -> Create a new user or search for an existing username -> Click the username to enter "User Details" -> Go to "Keys" -> Create a new key or copy an existing AK/SK
+    - As shown in the figure below
+        ![Volcengine AK/SK Management](../../assets/images/volcengine_aksk.jpg)
+3. Configure access permissions for the services that AgentKit depends on for the user:
+    - On the "User Details" page -> Go to "Permissions" -> Click "Add Permission", and grant the following policies to the user
+    - `AgentKitFullAccess` (AgentKit full access)
+    - `APMPlusServerFullAccess` (APMPlus full access)
+4. Obtain the Volcano Ark model Agent API Key for the user
+    - Search for the "Volcano Ark" product and click to enter the console
+    - Go to "API Key Management" -> Create or copy an existing API Key
+    - As shown in the figure below
+        ![Ark API Key Management](../../assets/images/ark_api_key_management.jpg)
+5. Activate the model's pre-built inference access point
+    - Search for the "Volcano Ark" product and click to enter the console
+    - Go to "Activation Management" -> "Language Models" -> Find the corresponding model -> Click "Activate Service"
+    - Activate the following models used in this case
+        - root_agent model: `deepseek-v3-1-terminus`
+        - Image generation model: `doubao-seedream-4-0-250828`
+        - Video generation model: `doubao-seedance-1-0-pro-250528`
+    - As shown in the figure below
+        ![Ark Model Service Management](../../assets/images/ark_model_service_management.jpg)
 
 ### Install Dependencies
 
-*It is recommended to use the uv tool to build the project*
+It is recommended to use the uv tool to build the project
 
 ```bash
 # install uv
@@ -121,10 +121,10 @@ export DOWNLOAD_DIR=/tmp
 
 **TOS Bucket Configuration:**
 
--   Default bucket: `agentkit-platform-{{your_account_id}}`
-    -   Where `{{your_account_id}}` needs to be replaced with your Volcano Engine account ID
-    -   Example: `DATABASE_TOS_BUCKET=agentkit-platform-12345678901234567890`
--   If you need to customize, you can modify the `bucket_name` parameter in [`tool/tos_upload.py`](tool/tos_upload.py) or pass it in during the tool call.
+- Default bucket: `agentkit-platform-{{your_account_id}}`
+  - Where `{{your_account_id}}` needs to be replaced with your Volcano Engine account ID
+  - Example: `DATABASE_TOS_BUCKET=agentkit-platform-12345678901234567890`
+- If you need to customize, you can modify the `bucket_name` parameter in [`tool/tos_upload.py`](tool/tos_upload.py) or pass it in during the tool call.
 
 ## Local Execution
 
@@ -190,19 +190,19 @@ Visit `http://localhost:8000` in your browser, select the `video_gen` agent, ent
 
 ### Example Prompts
 
--   **Chinese Idioms**: "A live-action version of Houyi shooting the suns, Chang'e flying to the moon, and Wu Gang chopping the tree"
--   **Classic Stories**: "A storybook of The Foolish Old Man Who Removed the Mountains and Jingwei Filling the Sea"
--   **Wuxia Novels**: "A live-action video story of The Legend of the Condor Heroes"
--   **Xuanhuan Novels**: "Han Li forming his Nascent Soul in A Record of a Mortal's Journey to Immortality"
--   **3D Animation**: "The great battle in the Void Sky Palace from A Record of a Mortal's Journey to Immortality, in 3D animation style"
+- **Chinese Idioms**: "A live-action version of Houyi shooting the suns, Chang'e flying to the moon, and Wu Gang chopping the tree"
+- **Classic Stories**: "A storybook of The Foolish Old Man Who Removed the Mountains and Jingwei Filling the Sea"
+- **Wuxia Novels**: "A live-action video story of The Legend of the Condor Heroes"
+- **Xuanhuan Novels**: "Han Li forming his Nascent Soul in A Record of a Mortal's Journey to Immortality"
+- **3D Animation**: "The great battle in the Void Sky Palace from A Record of a Mortal's Journey to Immortality, in 3D animation style"
 
 **Expected Behavior:**
 
-1.  Generate 4 illustration storyboard frames
-2.  Create 3 transitional video segments between consecutive frames
-3.  Start the local MCP tool to stitch the videos
-4.  Upload the final video to TOS
-5.  Return a signed URL for viewing
+1. Generate 4 illustration storyboard frames
+2. Create 3 transitional video segments between consecutive frames
+3. Start the local MCP tool to stitch the videos
+4. Upload the final video to TOS
+5. Return a signed URL for viewing
 
 ## AgentKit Deployment
 
@@ -247,9 +247,9 @@ agentkit launch
 
 After successful deployment:
 
-1.  Visit the [Volcano Engine AgentKit Console](https://console.volcengine.com/agentkit/region:agentkit+cn-beijing/runtime)
-2.  Click **Runtime** to view the deployed agent `storybook_illustrator`
-3.  Get the public access domain name (e.g., `https://xxxxx.apigateway-cn-beijing.volceapi.com`) and API Key
+1. Visit the [Volcano Engine AgentKit Console](https://console.volcengine.com/agentkit/region:agentkit+cn-beijing/runtime)
+2. Click **Runtime** to view the deployed agent `storybook_illustrator`
+3. Get the public access domain name (e.g., `https://xxxxx.apigateway-cn-beijing.volceapi.com`) and API Key
 
 #### **Debug based on page chatui**
 
@@ -323,36 +323,36 @@ Video generation effect demonstration.
 
 **Error: `npx` command not found**
 
--   Install Node.js 18+ and npm
--   Verify that `npx --version` runs correctly in the terminal
+- Install Node.js 18+ and npm
+- Verify that `npx --version` runs correctly in the terminal
 
 **TOS upload failed:**
 
--   Confirm that `VOLCENGINE_ACCESS_KEY` and `VOLCENGINE_SECRET_KEY` are set
--   Verify that your account has TOS bucket access permissions
+- Confirm that `VOLCENGINE_ACCESS_KEY` and `VOLCENGINE_SECRET_KEY` are set
+- Verify that your account has TOS bucket access permissions
 
 **MCP tool connection error:**
 
--   Ensure that the default MCP port does not conflict
--   Check the Node.js process logs for detailed error messages
+- Ensure that the default MCP port does not conflict
+- Check the Node.js process logs for detailed error messages
 
 **Using a custom TOS bucket:**
 
--   Set via environment variable: `export DATABASE_TOS_BUCKET="agentkit-platform-{{account_id}}"`
--   Or modify the default value in [`tool/tos_upload.py`](tool/tos_upload.py)
+- Set via environment variable: `export DATABASE_TOS_BUCKET="agentkit-platform-{{account_id}}"`
+- Or modify the default value in [`tool/tos_upload.py`](tool/tos_upload.py)
 
 **`uv sync` failed:**
 
--   Ensure that Python 3.12+ is installed
--   Check if the `.python-version` file matches your installed Python version
--   Try rebuilding the dependencies with `uv sync --index-url https://pypi.tuna.tsinghua.edu.cn/simple --refresh`
+- Ensure that Python 3.12+ is installed
+- Check if the `.python-version` file matches your installed Python version
+- Try rebuilding the dependencies with `uv sync --index-url https://pypi.tuna.tsinghua.edu.cn/simple --refresh`
 
 ## 🔗 Related Resources
 
--   [AgentKit Official Documentation](https://www.volcengine.com/docs/86681/1844878?lang=en)
--   [TOS Object Storage](https://www.volcengine.com/product/TOS)
--   [AgentKit Console](https://console.volcengine.com/agentkit/region:agentkit+cn-beijing/overview?projectName=default)
--   [Volcano Ark Console](https://console.volcengine.com/ark/region:ark+cn-beijing/overview?briefPage=0&briefType=introduce&type=new)
+- [AgentKit Official Documentation](https://www.volcengine.com/docs/86681/1844878?lang=en)
+- [TOS Object Storage](https://www.volcengine.com/product/TOS)
+- [AgentKit Console](https://console.volcengine.com/agentkit/region:agentkit+cn-beijing/overview?projectName=default)
+- [Volcano Ark Console](https://console.volcengine.com/ark/region:ark+cn-beijing/overview?briefPage=0&briefType=introduce&type=new)
 
 ## Code License
 

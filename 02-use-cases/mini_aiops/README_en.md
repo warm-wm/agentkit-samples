@@ -58,17 +58,17 @@ export VOLCENGINE_SECRET_KEY="xxxxxx"
 
 #### 4. Start the Service
 
-1.  Ensure that the environment variables are configured correctly.
+1. Ensure that the environment variables are configured correctly.
 
-2.  Start the test locally with `veadk web` (Note: Please remain in the `agentkit-samples/02-use-cases` directory).
+2. Start the test locally with `veadk web` (Note: Please remain in the `agentkit-samples/02-use-cases` directory).
 
 ```bash
 veadk web
 ```
 
-1.  Go to the service URL `http://127.0.0.1:8000`.
-2.  Select `mini_aiops`.
-3.  Chat with the Agent.
+1. Go to the service URL `http://127.0.0.1:8000`.
+2. Select `mini_aiops`.
+3. Chat with the Agent.
 
 #### 5. Test the Service
 

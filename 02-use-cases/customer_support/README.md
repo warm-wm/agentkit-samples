@@ -215,7 +215,7 @@ agentkit config \
 agentkit launch
 ```
 
-2. 调用智能体
+2. 调用智能体：
 
 ```bash
 agentkit invoke '{"prompt": "我想买一款客厅用的智能电视,主要用来打游戏,预算 3000 元以内"}'
