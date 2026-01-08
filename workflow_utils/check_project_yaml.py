@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import frontmatter
+import yaml
 
 SAMPLE_TYPES = ["tutorial", "application"]
 
@@ -14,10 +14,6 @@ COMPONENT_OPTIONS = {
     "knowledgebase": ["VikingKnowledge"],
     "memory": ["VikingMem", "Mem0"],
 }
-
-
-def should_skip(metadata: dict[str, Any]) -> bool:
-    return not metadata
 
 
 def check_name(metadata: dict[str, Any]):
@@ -54,6 +50,21 @@ def check_details(metadata: dict[str, Any]):
 
     if len(details) < 10 or len(details) > 40:
         raise ValueError("details should be between 10-40 characters")
+
+
+def check_tags(metadata: dict[str, Any]):
+    tags: dict = metadata.get("tags", {})
+    if not tags:
+        raise ValueError("tags is required")
+
+    assert tags.get("industry"), "industry tag is required"
+    assert tags.get("from"), "from tag is required"
+    assert tags.get("framework"), "framework tag is required"
+    assert tags.get("language"), "language tag is required"
+
+    tech: list = tags.get("tech", [])
+    if len(tech) > 5:
+        raise ValueError("tech should have 5 items at most")
 
 
 def check_type(metadata: dict[str, Any]):
@@ -149,13 +160,6 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if not args.files:
-        post = frontmatter.load("README.md")
-        if should_skip(post.metadata):
-            return 0
-        check_name(post.metadata)
-        check_description(post.metadata)
-        check_senarios(post.metadata)
-        check_components(post.metadata)
         return 0
 
     repo_root = Path(__file__).resolve().parent.parent
@@ -187,7 +191,7 @@ def main(argv: list[str] | None = None) -> int:
         except ValueError:
             continue
 
-        if path.name.lower() != "readme.md":
+        if path.name.lower() != "project.yaml":
             continue
 
         if use_cases_dir not in path.parents:
@@ -196,22 +200,21 @@ def main(argv: list[str] | None = None) -> int:
         if str(rel) not in changed_files:
             continue
 
-        post = frontmatter.load(path)
-
-        if should_skip(post.metadata):
-            continue
+        with open(path, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
 
         try:
-            check_name(post.metadata)
-            check_name_en(post.metadata)
-            check_description(post.metadata)
-            check_details(post.metadata)
-            check_type(post.metadata)
-            check_senarios(post.metadata)
-            check_prompts(post.metadata)
-            check_models(post.metadata)
-            check_envs(post.metadata)
-            check_components(post.metadata)
+            check_name(data)
+            check_name_en(data)
+            check_description(data)
+            check_details(data)
+            check_tags(data)
+            check_type(data)
+            check_senarios(data)
+            check_prompts(data)
+            check_models(data)
+            check_envs(data)
+            check_components(data)
         except ValueError as exc:
             sys.stderr.write(f"{rel}: {exc}\n")
             failed = True
