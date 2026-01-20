@@ -116,7 +116,7 @@ uv venv --python 3.12
 source .venv/bin/activate
 
 # install necessary dependencies
-uv pip install -r requirements.txt
+uv sync --index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 配置环境变量
