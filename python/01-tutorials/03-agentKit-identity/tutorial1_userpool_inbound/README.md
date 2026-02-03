@@ -106,53 +106,54 @@ flowchart TB
 | **Python 环境** | Python 3.12+ 及 [uv](https://docs.astral.sh/uv/) |
 | **AgentKit CLI** | 参考 [AgentKit CLI安全指南](https://volcengine.github.io/agentkit-sdk-python/content/1.introduction/2.installation.html) |
 
-
 ### 步骤1: 创建用户池和用户（控制台操作）
+
 1. **访问 Agent Identity 控制台**
 
 2. 打开 [用户池管理页面](https://console.volcengine.com/identity/region:identity+cn-beijing/user-pools)
 
-![图片](../docs/images/img_JbVuboKrwo9W8uxNvSDc5e6rnng.png)
+    ![图片](../docs/images/img_JbVuboKrwo9W8uxNvSDc5e6rnng.png)
 
 3. **新建用户池**
-	- 点击「新建用户池」
-	- 填写用户池名称（如 `my_agent_users`）
-	- 选择登录属性：用户名 + 手机号
-	- 点击「确认」
 
-![图片](../docs/images/img_A6jMboBhtoxITox0CSacAR8knxe.png)
+    - 点击「新建用户池」
+    - 填写用户池名称（如 `my_agent_users`）
+    - 选择登录属性：用户名 + 手机号
+    - 点击「确认」
+    ![图片](../docs/images/img_A6jMboBhtoxITox0CSacAR8knxe.png)
 
 4. **新建客户端**
-	- 进入用户池详情 → 点击「新建客户端」
-	- 客户端名称：`agent_web_client`
-	- 客户端类型：Web 应用
-	- 回调地址：`http://127.0.0.1:8082/callback`
-	- **记录 Client ID 和 Client Secret**
 
-![图片](../docs/images/img_XnJCbKOxfo6YKzxcfMbcd7eln6b.png)
+    - 进入用户池详情 → 点击「新建客户端」
+    - 客户端名称：`agent_web_client`
+    - 客户端类型：Web 应用
+    - 回调地址：`http://127.0.0.1:8082/callback`
+    - **记录 Client ID 和 Client Secret**
+    ![图片](../docs/images/img_XnJCbKOxfo6YKzxcfMbcd7eln6b.png)
 
 5. **创建测试用户**
-	- 在用户池中选择「用户管理」→「新建用户」
-	- 设置用户名和临时密码
 
-![图片](../docs/images/img_EYwdbEzWqodSg3xOwSwck2nQnNb.png)
+    - 在用户池中选择「用户管理」→「新建用户」
+    - 设置用户名和临时密码
+    ![图片](../docs/images/img_EYwdbEzWqodSg3xOwSwck2nQnNb.png)
 
 ### 步骤2: 测试身份池登录
+
 #### 配置环境变量
+
 1. 复制环境变量模板：
 
-```bash
-# 确保位于正确的目录
-cd tutorial-1-userpool-inbound
+    ```bash
+    # 确保位于正确的目录
+    cd tutorial-1-userpool-inbound
 
-# 从模板创建.env
-cp .env.template .env
-```
+    # 从模板创建.env
+    cp .env.template .env
+    ```
 
 2. 编辑 `.env` 文件：
 
-> 在本步骤中，`AGENT_NAME`和 `AGENT_ENDPOINT` 可以不用修改。
-> 
+    > 在本步骤中，`AGENT_NAME`和 `AGENT_ENDPOINT` 可以不用修改。
 
 从控制台找到正确 `OAUTH2_ISSUER_URI`、`OAUTH2_CLIENT_ID` 和`OAUTH2_CLIENT_SECRET`，填入配置文件中
 
@@ -166,29 +167,31 @@ OAUTH2_SCOPES='openid profile email'
 ```
 
 #### 安装依赖
+
 ```bash
 uv venv --python=3.12
 uv pip install -r requirements.txt
 ```
 
 #### 测试OAuth登录
+
 1. 启动测试Web应用：
 
-```bash
-python oauth2_testapp.py
-```
+    ```bash
+    python oauth2_testapp.py
+    ```
 
 2. 打开浏览器访问 [http://127.0.0.1:8082](http://127.0.0.1:8082/)，点击"Sign in"
 
-![图片](../docs/images/img_Ui1FbkZiJo5FbVxgZi3cnWWjnph.png)
+    ![图片](../docs/images/img_Ui1FbkZiJo5FbVxgZi3cnWWjnph.png)
 
 3. 浏览器会跳转到用户池的登录页，用此前在控制台创建所用户的用户名/密码登录
 
-![图片](../docs/images/img_KfGWbh8rBoxZz0xzrBmcsMfJnkf.png)
+    ![图片](../docs/images/img_KfGWbh8rBoxZz0xzrBmcsMfJnkf.png)
 
 4. 登录成功会跳转到授权页，点击"允许访问"
 
-![图片](../docs/images/img_OG2GbMYg0oBxswx8OoOcW0INnmc.png)
+    ![图片](../docs/images/img_OG2GbMYg0oBxswx8OoOcW0INnmc.png)
 
 5. 浏览器跳转页面会显示获得的Access Token，以及从Token中解析出来的字段，其中：
 
@@ -201,31 +204,30 @@ python oauth2_testapp.py
 ![图片](../docs/images/img_VqTyb7RvQoXyx2xne1HcNia3nwR.png)
 
 ### 步骤3: 验证身份信息
+
 前面的流程介绍了如何通过OAuth2登录流程来获取身份池颁发的Access Token，本节会介绍AgentKit是如何消费Access Token来验证身份信息的。
 
 #### 理解身份验证流程
+
 ![图片](../docs/images/userpool_verify.svg)
 
-
 #### 启用身份池验证
+
 当创建AgentKit Runtime时，可以指定使用**OAuth JWT**模式进行入站身份认证，此时需要同时指定绑定的身份池，并（可选的）指定允许的客户端。
 
-- 如果是通过[AgentKit Runtime控制台](https://console.volcengine.com/agentkit/region:agentkit+cn-beijing/runtime/create)创建，则配置方式见下图： 
+- 如果是通过[AgentKit Runtime控制台](https://console.volcengine.com/agentkit/region:agentkit+cn-beijing/runtime/create)创建，则配置方式见下图：
 
 ![图片](../docs/images/img_N8NRbQyy2odpq0xvCqUc7I9Inbb.png)
 
 - 如果是通过 AgentKit CLI创建Runtime，则需要在 agentkit.yml中进行如下配置：
-	- 将`runtime_auth_type`设置为`custom_jwt`
-	- 将`runtime_jwt_discovery_url`设置为用户池的“OIDC 发现端点 Discovery URL”
-	- （可选）将`runtime_jwt_allowed_clients`设置为允许的一个或者多个客户端的ClientID
-
-
+  - 将`runtime_auth_type`设置为`custom_jwt`
+  - 将`runtime_jwt_discovery_url`设置为用户池的“OIDC 发现端点 Discovery URL”
+  - （可选）将`runtime_jwt_allowed_clients`设置为允许的一个或者多个客户端的ClientID
 
 下一节我们将使用AgentKit CLI来实际部署一个智能体到AgentKit runtime上，并且开启身份验证。
 
-
-
 #### 部署一个目标Agent
+
 1. 创建agentkit部署配置
 
 ```bash
@@ -279,9 +281,7 @@ agentkit launch
 
 ![图片](../docs/images/img_Ug2bbKXrboKtx6xMAADcJVWwnCe.png)
 
-记录下**Service endpoint 地址**（通常格式为https://xxxx.apigateway-<region>.volceapi.com ），在下一节测试中我们使用到。
-
-
+记录下**Service endpoint 地址**（通常格式为`https://xxxx.apigateway-<region>.volceapi.com`），在下一节测试中我们使用到。
 
 1. 完成部署后，在Runtime控制界面也能看到我们部署的Agent
 
@@ -291,9 +291,8 @@ agentkit launch
 
 ![图片](../docs/images/img_XL9db9ZjPoNPdpx8qCXchesvnze.png)
 
-
-
 #### 测试Agent身份验证
+
 使用步骤2得到的OAuth2 access token，可以进行一个快速的身份验证测试
 
 ```bash
@@ -311,10 +310,10 @@ curl $AGENT_ENDPOINT'/invoke' \
   --data-raw $'{"prompt": "你能做什么？"}'
 ```
 
-
-
 ### 步骤4: 完整的客户端体验
+
 #### 配置环境变量
+
 1. 复制环境变量模板并填写：
 
 ```bash
@@ -342,25 +341,27 @@ AGENT_ENDPOINT=<AgentKit Runtime Endpoint>
 ```
 
 #### 安装依赖
+
 ```bash
 uv venv --python=3.12
 uv pip install -r requirements.txt
 ```
 
 #### 运行客户端
+
 1. 启动应用
 
-```bash
-uv run app.py
-```
+    ```bash
+    uv run app.py
+    ```
 
-2. 在浏览器打开 http://127.0.0.1:8082 ，直接输入请求会返回401未授权
+2. 在浏览器打开 `http://127.0.0.1:8082` ，直接输入请求会返回401未授权
 
-![图片](../docs/images/img_EyF0bXnSzokKWQxMcdncGQornQb.png)
+    ![图片](../docs/images/img_EyF0bXnSzokKWQxMcdncGQornQb.png)
 
 3. 点击登录完成登录流程（与步骤2类似），然后再输入请求会正确返回响应
 
-![图片](../docs/images/img_NlbGbXCs5oY0sXxyTrJciMvsnqf.png)
+    ![图片](../docs/images/img_NlbGbXCs5oY0sXxyTrJciMvsnqf.png)
 
 ---
 
@@ -404,3 +405,25 @@ uv run app.py
 ## 相关资源
 
 - [Agent Identity 产品文档](https://www.volcengine.com/docs/identity)
+
+## 概述
+
+## 核心功能
+
+## Agent 能力
+
+## 目录结构说明
+
+## 本地运行
+
+## AgentKit 部署
+
+## 示例提示词
+
+## 效果展示
+
+## 常见问题
+
+## 代码许可
+
+本工程遵循 Apache 2.0 License
