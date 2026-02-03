@@ -1,1 +1,1 @@
-../tutorial-1-userpool-inbound/app.py
+../tutorial1_userpool_inbound/app.py
