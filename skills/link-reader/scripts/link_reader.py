@@ -59,7 +59,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python link_reader.py <url1> [url2] ...")
         sys.exit(1)
-    
+
     urls = sys.argv[1:]
     # Run the async function
     result = asyncio.run(link_reader(urls))

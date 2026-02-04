@@ -59,12 +59,9 @@ def web_search(query: str) -> list[str]:
     else:
         logger.debug("Successfully get AK/SK from environment variables.")
 
-
     if not ak or not sk:
         logger.error("AK/SK is empty.")
         return []
-    
-
 
     response = ve_request(
         request_body={
