@@ -35,9 +35,7 @@ app_name = "mem0_agent_app_name"
 user_id = "mem0_agent_user_id"
 
 short_term_memory = ShortTermMemory()
-long_term_memory = LongTermMemory(
-    backend="mem0", app_name=app_name, user_id=user_id
-)
+long_term_memory = LongTermMemory(backend="mem0", app_name=app_name, user_id=user_id)
 
 ROOT_AGENT_INSTRUCTION = ROOT_AGENT_INSTRUCTION_CN
 
