@@ -34,7 +34,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 # 1. Define root_agent with veadk.AgentBuilder (support veadk web)
 yaml_path = "agent.yaml"
 if not os.path.isfile(yaml_path):
-    yaml_path = "inspection_assistant/agent.yaml"
+    yaml_path = "store_inspection_assistant/agent.yaml"
 
 app_name = "inspection_assistant"
 agent_builder = AgentBuilder()

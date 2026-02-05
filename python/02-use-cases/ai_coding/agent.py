@@ -21,7 +21,7 @@ from agentkit.apps import AgentkitAgentServerApp, AgentkitSimpleApp
 from dotenv import load_dotenv
 from google.adk.planners import BuiltInPlanner
 from google.genai import types
-from tools import get_url_of_frontend_code_in_tos, upload_frontend_code_to_tos
+from .tools import get_url_of_frontend_code_in_tos, upload_frontend_code_to_tos
 from veadk import Agent, Runner
 from veadk.memory import ShortTermMemory
 from veadk.tools.builtin_tools.run_code import run_code
@@ -61,7 +61,7 @@ root_agent = Agent(
             thinking_budget=1024,
         )
     ),
-    model_name="deepseek-v3-1-terminus",
+    model_name="deepseek-v3-2-251201",
 )
 
 app_name = "ai_coding_agent"
