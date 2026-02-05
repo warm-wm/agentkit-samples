@@ -40,14 +40,14 @@ logger.setLevel(logging.INFO)
 if not logger.handlers:
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(message)s')
+    formatter = logging.Formatter("%(message)s")
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
 
 def _get_session_prefix() -> str:
     """Extract session prefix from TOOL_USER_SESSION_ID environment variable
-    
+
     Returns:
         str: Session prefix (e.g., "skill_agent_veadk_default_user_tmp-session-20251210150057")
              or timestamp if not set
@@ -67,7 +67,7 @@ def upload_file_to_tos(
     ak: Optional[str] = None,
     sk: Optional[str] = None,
     session_token: Optional[str] = None,
-    expires: int = 604800, # 7-day validity
+    expires: int = 604800,  # 7-day validity
 ) -> Optional[str]:
     """
     Upload a file to TOS object storage and return a signed accessible URL
@@ -178,8 +178,10 @@ def upload_file_to_tos(
         )
 
         signed_url = signed_url_output.signed_url
-        logger.info(f"Signed URL generated (valid for {expires} seconds / {expires // 86400} days)")
-        
+        logger.info(
+            f"Signed URL generated (valid for {expires} seconds / {expires // 86400} days)"
+        )
+
         return signed_url
 
     except tos.exceptions.TosClientError as e:
@@ -194,6 +196,7 @@ def upload_file_to_tos(
     except Exception as e:
         logger.error(f"File upload failed: {e}")
         import traceback
+
         traceback.print_exc()
         return None
     finally:
@@ -271,7 +274,7 @@ def upload_directory_to_tos(
 
     # Create TOS client
     client = None
-    
+
     try:
         # Initialize TOS client
         endpoint = f"tos-{region}.volces.com"
@@ -307,20 +310,22 @@ def upload_directory_to_tos(
         for root, dirs, files in os.walk(directory_path):
             for file in files:
                 file_path = os.path.join(root, file)
-                
+
                 # Calculate relative path from directory_path
                 relative_path = os.path.relpath(file_path, directory_path)
-                
+
                 # Construct object key: upload/{session_prefix}/{directory_name}/{relative_path}
                 object_key = f"{object_key_prefix}/{relative_path}"
-                
+
                 # Upload file
                 try:
                     result = client.put_object_from_file(
                         bucket=bucket_name, key=object_key, file_path=file_path
                     )
-                    logger.info(f"Uploaded: {file_path} -> {object_key}")
-                    
+                    logger.info(
+                        f"Uploaded: {file_path} -> {object_key}, result: {result}"
+                    )
+
                 except Exception as e:
                     logger.error(f"Failed to upload {file_path}: {e}")
 
@@ -340,6 +345,7 @@ def upload_directory_to_tos(
     except Exception as e:
         logger.error(f"Directory upload failed: {e}")
         import traceback
+
         traceback.print_exc()
         return None
     finally:
@@ -359,10 +365,10 @@ def upload_to_tos(
 ) -> Optional[Union[str, list[str]]]:
     """
     Upload a file or directory to TOS object storage
-    
+
     This function automatically detects whether the path is a file or directory
     and calls the appropriate upload function.
-    
+
     Args:
         path: Local file or directory path
         bucket_name: TOS bucket name
@@ -371,7 +377,7 @@ def upload_to_tos(
         sk: Secret Key
         session_token: Session token
         expires: Signed URL validity period (seconds)
-    
+
     Returns:
         str: Signed URL if uploading a file
         list[str]: List of signed URLs if uploading a directory
@@ -380,7 +386,7 @@ def upload_to_tos(
     if not os.path.exists(path):
         logger.error(f"Error: Path does not exist: {path}")
         return None
-    
+
     if os.path.isfile(path):
         # Upload single file
         return upload_file_to_tos(
@@ -411,7 +417,7 @@ def upload_to_tos(
 def main():
     """Command-line interface for tos_upload"""
     parser = argparse.ArgumentParser(
-        description='Upload files or directories to Volcano Engine TOS and generate signed URLs',
+        description="Upload files or directories to Volcano Engine TOS and generate signed URLs",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -432,47 +438,38 @@ Environment Variables:
   VOLCENGINE_ACCESS_KEY     Volcano Engine access key
   VOLCENGINE_SECRET_KEY     Volcano Engine secret key
   TOOL_USER_SESSION_ID      Session ID for generating object key prefix
-        """
+        """,
     )
-    
+
+    parser.add_argument("path", type=str, help="Local file or directory path to upload")
+
+    parser.add_argument("--bucket", type=str, required=True, help="TOS bucket name")
+
     parser.add_argument(
-        'path',
+        "--region",
         type=str,
-        help='Local file or directory path to upload'
+        default="cn-beijing",
+        help="TOS region (default: cn-beijing)",
     )
-    
+
     parser.add_argument(
-        '--bucket',
-        type=str,
-        required=True,
-        help='TOS bucket name'
-    )
-    
-    parser.add_argument(
-        '--region',
-        type=str,
-        default='cn-beijing',
-        help='TOS region (default: cn-beijing)'
-    )
-    
-    parser.add_argument(
-        '--expires',
+        "--expires",
         type=int,
         default=604800,
-        help='Signed URL expiration in seconds (default: 604800 = 7 days)'
+        help="Signed URL expiration in seconds (default: 604800 = 7 days)",
     )
-    
+
     args = parser.parse_args()
-    
+
     try:
         # Auto-detect and upload
         result = upload_to_tos(
             path=args.path,
             bucket_name=args.bucket,
             region=args.region,
-            expires=args.expires
+            expires=args.expires,
         )
-        
+
         if result:
             print("\n" + "=" * 60)
             print("✅ Upload Successful!")
@@ -486,10 +483,11 @@ Environment Variables:
         else:
             logger.error("\n❌ Upload failed")
             sys.exit(1)
-        
+
     except Exception as e:
         logger.error(f"Error: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
