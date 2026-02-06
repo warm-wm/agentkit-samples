@@ -17,21 +17,20 @@ import logging
 import os
 import sys
 
-from agentkit.apps import AgentkitAgentServerApp, AgentkitSimpleApp
-from dotenv import load_dotenv
-from google.adk.planners import BuiltInPlanner
-from google.genai import types
-from .tools import get_url_of_frontend_code_in_tos, upload_frontend_code_to_tos
-from veadk import Agent, Runner
-from veadk.memory import ShortTermMemory
-from veadk.tools.builtin_tools.run_code import run_code
-from veadk.tracing.telemetry.exporters.apmplus_exporter import APMPlusExporter
-from veadk.tracing.telemetry.opentelemetry_tracer import OpentelemetryTracer
-
-current_script_path = os.path.abspath(__file__)
-current_dir = os.path.dirname(current_script_path)
+current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
-print(sys.path)
+
+from agentkit.apps import AgentkitAgentServerApp, AgentkitSimpleApp  # noqa: E402
+from dotenv import load_dotenv  # noqa: E402
+from google.adk.planners import BuiltInPlanner  # noqa: E402
+from google.genai import types  # noqa: E402
+from tools import get_url_of_frontend_code_in_tos, upload_frontend_code_to_tos  # noqa: E402
+
+from veadk import Agent, Runner  # noqa: E402
+from veadk.memory import ShortTermMemory  # noqa: E402
+from veadk.tools.builtin_tools.run_code import run_code  # noqa: E402
+from veadk.tracing.telemetry.exporters.apmplus_exporter import APMPlusExporter  # noqa: E402
+from veadk.tracing.telemetry.opentelemetry_tracer import OpentelemetryTracer  # noqa: E402
 
 
 load_dotenv()
