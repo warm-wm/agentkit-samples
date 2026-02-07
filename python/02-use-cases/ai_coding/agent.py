@@ -28,7 +28,7 @@ from tools import get_url_of_frontend_code_in_tos, upload_frontend_code_to_tos  
 
 from veadk import Agent, Runner  # noqa: E402
 from veadk.memory import ShortTermMemory  # noqa: E402
-from veadk.tools.builtin_tools.run_code import run_code  # noqa: E402
+# from veadk.tools.builtin_tools.run_code import run_code  # noqa: E402
 # from veadk.tracing.telemetry.exporters.apmplus_exporter import APMPlusExporter  # noqa: E402
 # from veadk.tracing.telemetry.opentelemetry_tracer import OpentelemetryTracer  # noqa: E402
 
@@ -42,13 +42,19 @@ short_term_memory = ShortTermMemory(backend="local")
 
 # tracer = OpentelemetryTracer(exporters=[APMPlusExporter()])
 
-with open("%s/prompt.zh.md" % current_dir, "r", encoding="utf-8") as f:
-    instruction = f.read()
+provider = os.getenv("CLOUD_PROVIDER")
+if provider and provider.lower() == "byteplus":
+    with open("%s/prompt.en.md" % current_dir, "r", encoding="utf-8") as f:
+        instruction = f.read()
+else:
+    with open("%s/prompt.zh.md" % current_dir, "r", encoding="utf-8") as f:
+        instruction = f.read()
 root_agent = Agent(
+    name="ai_coding_agent",
     description="An AI coding agent that helps users solve programming problems",
     instruction=instruction,
     tools=[
-        run_code,
+        # run_code,
         upload_frontend_code_to_tos,
         get_url_of_frontend_code_in_tos,
     ],
