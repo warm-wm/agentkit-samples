@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     async def send_request_parallel():
         await send_request(
-            "请运行以下工作流程：1. 帮我写一个pdf处理的skill，能够支持加载pdf、编辑pdf和从pdf中提取文字信息即可；2. 将写好的 skill 注册到 skill space。"
+            "Please run the following workflow: 1. Write a pdf processing skill that can support loading pdf, editing pdf, and extracting text information from pdf; 2. Register the written skill in the skill space."
         )
 
     asyncio.run(send_request_parallel())
