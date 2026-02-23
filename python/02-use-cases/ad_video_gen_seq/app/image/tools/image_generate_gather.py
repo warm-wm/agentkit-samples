@@ -27,7 +27,12 @@ from veadk.consts import DEFAULT_IMAGE_GENERATE_MODEL_NAME
 logger = get_logger(__name__)
 
 
-async def image_generate(tasks: list[dict], tool_context: ToolContext, timeout: int = 600, model_name: str = getenv("MODEL_IMAGE_NAME", DEFAULT_IMAGE_GENERATE_MODEL_NAME)) -> Dict:
+async def image_generate(
+    tasks: list[dict],
+    tool_context: ToolContext,
+    timeout: int = 600,
+    model_name: str = getenv("MODEL_IMAGE_NAME", DEFAULT_IMAGE_GENERATE_MODEL_NAME),
+) -> Dict:
     """Generate images with Seedream 4.5.
 
     Commit batch image generation requests via tasks.
@@ -158,7 +163,9 @@ async def image_generate(tasks: list[dict], tool_context: ToolContext, timeout: 
 
     # Call the underlying image_generate function with the flattened list of tasks
     logger.debug(f"image_generate_gather new_tasks: {new_tasks}")
-    raw_result = await image_generate_builtin(new_tasks, tool_context, timeout, model_name)
+    raw_result = await image_generate_builtin(
+        new_tasks, tool_context, timeout, model_name
+    )
     logger.debug(f"image_generate_gather raw_result: {raw_result}")
 
     # Remap the results to match the original task structure
@@ -178,7 +185,9 @@ async def image_generate(tasks: list[dict], tool_context: ToolContext, timeout: 
 
             original_idx, original_sub_idx = task_origin_info[new_task_idx]
             new_key = f"task_{original_idx}_image_{original_sub_idx}"
-            logger.error(f"image_generate_gather new_task_idx: {new_task_idx}, original_idx: {original_idx}, original_sub_idx: {original_sub_idx}")
+            logger.error(
+                f"image_generate_gather new_task_idx: {new_task_idx}, original_idx: {original_idx}, original_sub_idx: {original_sub_idx}"
+            )
             logger.error(f"image_generate_gather new_key: {new_key}, url: {url}")
             remapped_success.append({new_key: url})
 
