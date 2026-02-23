@@ -48,7 +48,7 @@
 开始前，请确保您的开发环境满足以下要求：
 
 - Python 3.12 或更高版本
-- veadk-python 0.5.5（见 `pyproject.toml`）
+- veadk-python 0.5.22（见 `pyproject.toml`）
 - 推荐使用 `uv` 进行依赖管理
 - 本地需要可用的 `ffmpeg`（用于 `moviepy` 合成视频）
 - <a target="_blank" href="https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey">获取火山方舟 API KEY</a>
