@@ -214,11 +214,11 @@ def ve_request_with_aksk(
     Scheme = scheme
     AK = ak
     SK = sk
-    
+
     # Check if AK and SK are provided
     if not (AK and SK):
         raise ValueError("Access key and secret key are required")
-        
+
     now = datetime.datetime.utcnow()
     # Body的格式需要配合Content-Type，API使用的类型请阅读具体的官方文档，如:json格式需要json.dumps(obj)
     # response_body = request("GET", now, {"Limit": "2"}, {}, AK, SK, "ListUsers", None)
@@ -251,7 +251,7 @@ def ve_request_with_apikey(
     # Check if API key is provided
     if not api_key:
         raise ValueError("API key is required")
-        
+
     now = datetime.datetime.utcnow()
     # Body的格式需要配合Content-Type，API使用的类型请阅读具体的官方文档，如:json格式需要json.dumps(obj)
     import json
@@ -259,16 +259,16 @@ def ve_request_with_apikey(
     try:
         # Use the provided API Key access URL
         url = "https://open.feedcoopapi.com/search_api/web_search"
-        
+
         # Construct headers
         headers = {**header}
         headers["Authorization"] = f"Bearer {api_key}"
         headers["Content-Type"] = content_type
-        
+
         print(f"Request URL: {url}")
         print(f"Request Headers: {headers}")
         print(f"Request Body: {json.dumps(request_body)}")
-        
+
         # Send request
         response = requests.request(
             method=method,
@@ -276,7 +276,7 @@ def ve_request_with_apikey(
             headers=headers,
             data=json.dumps(request_body),
         )
-        
+
         try:
             return response.json()
         except Exception:
@@ -309,7 +309,9 @@ def web_search(query: str) -> list[str]:
         ak = os.getenv("VOLCENGINE_ACCESS_KEY")
         sk = os.getenv("VOLCENGINE_SECRET_KEY")
         if not (ak and sk):
-            print("VOLCENGINE_ACCESS_KEY or VOLCENGINE_SECRET_KEY not found in environment variables.")
+            print(
+                "VOLCENGINE_ACCESS_KEY or VOLCENGINE_SECRET_KEY not found in environment variables."
+            )
         else:
             print("Successfully get AK/SK from environment variables.")
     else:
@@ -338,7 +340,7 @@ def web_search(query: str) -> list[str]:
             print("Get AK/SK from credential failed.")
         else:
             print("Successfully get AK/SK from credential.")
-        
+
     if not (ak and sk) and not api_key:
         raise PermissionError("no credential found")
 
